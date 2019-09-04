@@ -1,6 +1,8 @@
 package com.volders.springredis;
 
 import com.volders.springredis.model.Question;
+import com.volders.springredis.repo.QuestionRepo;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;

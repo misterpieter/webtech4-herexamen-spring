@@ -31,18 +31,4 @@ public class QuestionService implements QuestionRepo {
     hashOperations.put("Question", question.getId(), question);
   }
 
-  @Override
-  public Map<String, Question> findall() {
-    return hashOperations.entries("Question");
-  }
-
-  @Override
-  public void delete(String id) {
-    hashOperations.delete("Question", id);
-  }
-
-  @Override
-  public void update(Question question) {
-    save(question);
-  }
 }
