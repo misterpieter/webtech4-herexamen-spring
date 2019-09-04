@@ -7,14 +7,14 @@ import java.util.List;
 public class Question implements Serializable {
 
   private static int counter = 0;
-  private String id;
+  private int id;
   private String question;
   private AnswersEnum answersEnum;
   private List<String> answers;
   private String answer;
 
   public Question(String question) {
-    id = String.valueOf(++counter);
+    id = ++counter;
     this.question = question;
     this.answer = answersEnum.randomAnswer().toString();
     answers = new ArrayList<>();
@@ -25,12 +25,8 @@ public class Question implements Serializable {
     this("Zuig ik in webTech?");
   }
 
-  public String getId() {
+  public int getId() {
     return id;
-  }
-
-  public void setId(String id) {
-    this.id = id;
   }
 
   public String getQuestion() {

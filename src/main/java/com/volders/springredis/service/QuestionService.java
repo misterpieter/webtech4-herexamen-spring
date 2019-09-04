@@ -2,6 +2,7 @@ package com.volders.springredis.service;
 
 import com.volders.springredis.model.Question;
 import com.volders.springredis.repo.QuestionRepo;
+import java.util.List;
 import java.util.Map;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -22,7 +23,7 @@ public class QuestionService implements QuestionRepo {
   }
 
   @Override
-  public Question findById(String id) {
+  public Question findById(int id) {
     return (Question) hashOperations.get("Question",id);
   }
 
@@ -31,4 +32,8 @@ public class QuestionService implements QuestionRepo {
     hashOperations.put("Question", question.getId(), question);
   }
 
+  @Override
+  public Map<String, Question> findall() {
+    return hashOperations.entries("Question");
+  }
 }

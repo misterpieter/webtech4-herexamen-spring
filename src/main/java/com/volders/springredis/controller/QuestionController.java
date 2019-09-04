@@ -3,6 +3,10 @@ package com.volders.springredis.controller;
 import com.volders.springredis.model.Question;
 import com.volders.springredis.repo.QuestionRepo;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import javax.jws.WebParam.Mode;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Controller;
@@ -13,13 +17,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import redis.clients.jedis.BinaryClient.LIST_POSITION;
 
 @Controller
 @RequestMapping("/")
 public class QuestionController {
 
   private QuestionRepo questionRepo;
-  public Question q = new Question();
+  public Question q;
 
   public QuestionController(QuestionRepo questionRepo) {
     this.questionRepo = questionRepo;
@@ -42,23 +47,36 @@ public class QuestionController {
   public String getAnswer(Model model) {
 //    model.addAttribute("question", questionRepo.findById(q.getId()));
     model.addAttribute("question", q);
+
     return "answer";
   }
 
+
   @PostMapping("/question")
   public String askQuestion(@RequestParam("question") String question, Model model) {
-//
-//    if (this.service.exists("authorcount")) {
-//      this.service.incr("authorcount");
-//    } else {
-//      this.service.setKey("authorcount", "1");
-//    }
-    q.setQuestion(question);
+    Map<String,Question> map = questionRepo.findall();
+    List<Question> list = new ArrayList(questionRepo.findall().values());
+
+    if(!list.isEmpty()) {
+      for (Question questioninList : list) {
+        if (questioninList.getQuestion().equals(question)) {
+          q = questioninList;
+        } else {
+          q = new Question(question);
+        }
+      }
+    }
+    else q = new Question(question);
+
     questionRepo.save(q);
-    return "redirect:/answer";  }
+    return "redirect:/answer";
+  }
 
 
-//  //request
+
+
+
+//  //BASIC REQUEST
 //  @GetMapping("/save/{question}/")
 //  public Question add(
 //      @PathVariable("question") String question){
